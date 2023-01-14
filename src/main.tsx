@@ -5,6 +5,8 @@ import { RecoilRoot } from "recoil";
 import { ThemeProvider, createGlobalStyle } from "styled-components";
 import { theme } from "./theme";
 import { BrowserRouter } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "react-query";
+import "./font.css";
 
 const GlobalStyle = createGlobalStyle`
 html,
@@ -135,8 +137,10 @@ table {
   box-sizing: border-box;
 }
 body {
-  font-family: 'Raleway', sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
   overflow-x: hidden;
+  color: ${(props) => props.theme.white.darker};
+  background: black;
 }
 a {
   text-decoration: none;
@@ -144,13 +148,17 @@ a {
 }
 `;
 
+const client = new QueryClient();
+
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <RecoilRoot>
-    <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <GlobalStyle />
-        <App />
-      </BrowserRouter>
-    </ThemeProvider>
+    <QueryClientProvider client={client}>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+          <GlobalStyle />
+          <App />
+        </BrowserRouter>
+      </ThemeProvider>
+    </QueryClientProvider>
   </RecoilRoot>
 );
