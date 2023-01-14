@@ -4,6 +4,7 @@ import App from "./App";
 import { RecoilRoot } from "recoil";
 import { ThemeProvider, createGlobalStyle } from "styled-components";
 import { theme } from "./theme";
+import { BrowserRouter } from "react-router-dom";
 
 const GlobalStyle = createGlobalStyle`
 html,
@@ -135,6 +136,7 @@ table {
 }
 body {
   font-family: 'Raleway', sans-serif;
+  overflow-x: hidden;
 }
 a {
   text-decoration: none;
@@ -145,8 +147,10 @@ a {
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <RecoilRoot>
     <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      <App />
+      <BrowserRouter>
+        <GlobalStyle />
+        <App />
+      </BrowserRouter>
     </ThemeProvider>
   </RecoilRoot>
 );
