@@ -14,6 +14,7 @@ const Nav = styled(motion.nav)`
   padding: 20px 60px;
   color: white;
   user-select: none;
+  z-index: 10;
 `;
 
 const Col = styled.div`
@@ -125,6 +126,7 @@ function Header() {
   const [searchOpen, setSearchOpen] = useState<boolean>(false);
   const InputRef = useRef<HTMLInputElement>(null);
   const homeMatch = useMatch("/");
+  const MoviesMatch = useMatch("/movies/:movieId");
   const tvMatch = useMatch("/tv");
   const { scrollY } = useScroll();
   const navAnimation = useAnimation();
@@ -157,7 +159,10 @@ function Header() {
         </Logo>
         <Items>
           <Item>
-            <Link to="/">Home {homeMatch && <Circle layoutId="circle" />}</Link>
+            <Link to="/">
+              Home{" "}
+              {homeMatch || MoviesMatch ? <Circle layoutId="circle" /> : null}
+            </Link>
           </Item>
           <Item>
             <Link to="/tv">
