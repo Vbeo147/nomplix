@@ -1,7 +1,8 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { motion, useScroll, useAnimation } from "framer-motion";
-import { Link, useMatch } from "react-router-dom";
+import { Link, useMatch, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
 const Nav = styled(motion.nav)`
   display: flex;
@@ -60,7 +61,7 @@ const Item = styled.li`
   }
 `;
 
-const Search = styled.span`
+const Search = styled.form`
   color: white;
   display: flex;
   align-items: center;
@@ -122,17 +123,22 @@ const navVariants = {
   },
 };
 
+interface IForm {
+  keyword: string;
+}
+
 function Header() {
   const [searchOpen, setSearchOpen] = useState<boolean>(false);
-  const InputRef = useRef<HTMLInputElement>(null);
+  const { register, handleSubmit, setFocus } = useForm<IForm>();
   const homeMatch = useMatch("/");
   const MoviesMatch = useMatch("/movies/:movieId");
   const tvMatch = useMatch("/tv");
   const { scrollY } = useScroll();
   const navAnimation = useAnimation();
+  const navigate = useNavigate();
   const toggleSearch = () => {
     setSearchOpen((prev) => !prev);
-    if (!searchOpen) InputRef.current?.focus();
+    if (!searchOpen) setFocus("keyword", { shouldSelect: true });
   };
   useEffect(() => {
     scrollY.onChange(() => {
@@ -143,6 +149,9 @@ function Header() {
       }
     });
   }, [scrollY, navAnimation]);
+  const onVaild = (data: IForm) => {
+    navigate(`/search?keyword=${data.keyword}`);
+  };
   return (
     <Nav variants={navVariants} initial="initial" animate={navAnimation}>
       <Col>
@@ -172,7 +181,7 @@ function Header() {
         </Items>
       </Col>
       <Col>
-        <Search>
+        <Search onSubmit={handleSubmit(onVaild)}>
           <motion.svg
             animate={{ x: searchOpen ? -240 : 0 }}
             transition={{ type: "linear" }}
@@ -188,7 +197,8 @@ function Header() {
             ></path>
           </motion.svg>
           <Input
-            ref={InputRef}
+            autoComplete="false"
+            {...register("keyword", { required: true, minLength: 2 })}
             initial={{ scaleX: 0 }}
             animate={{
               scaleX: searchOpen ? 1 : 0,
