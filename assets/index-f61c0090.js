@@ -487,4 +487,4 @@ a {
   text-decoration: none;
   color: inherit;
 }
-`,o3=new lL;kf.createRoot(document.getElementById("root")).render(q(_U,{children:q(pL,{client:o3,children:q(O2,{theme:n3,children:xe(KT,{children:[q(r3,{}),q(t3,{})]})})})}));
+`,o3=new lL;kf.createRoot(document.getElementById("root")).render(q(_U,{children:q(pL,{client:o3,children:q(O2,{theme:n3,children:xe(KT,{basename:"nomplix",children:[q(r3,{}),q(t3,{})]})})})}));
