@@ -154,7 +154,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <RecoilRoot>
     <QueryClientProvider client={client}>
       <ThemeProvider theme={theme}>
-        <BrowserRouter>
+        <BrowserRouter basename="nomplix">
           <GlobalStyle />
           <App />
         </BrowserRouter>
