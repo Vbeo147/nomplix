@@ -140,7 +140,7 @@ body {
   font-family: "Noto Sans KR", sans-serif;
   overflow-x: hidden;
   color: ${(props) => props.theme.white.darker};
-  background: black;
+  background: ${(props) => props.theme.black.darker};
 }
 a {
   text-decoration: none;

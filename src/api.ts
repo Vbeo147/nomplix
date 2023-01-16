@@ -1,8 +1,9 @@
 import axios from "axios";
 
 const BASE_PATH = "https://api.themoviedb.org/3";
+const API_KEY = import.meta.env.VITE_API_KEY;
 
-interface IMovie {
+export interface IMovies {
   adult: boolean;
   backdrop_path: string;
   id: number;
@@ -25,16 +26,62 @@ export interface IGetMoviesResult {
       minimum: string;
     };
     page: number;
-    results: IMovie[];
+    results: IMovies[];
     total_pages: number;
     total_results: number;
   };
 }
 
-export function getMovies() {
+export interface IGetMovieResult {
+  data: {
+    total_results: number;
+    results: {
+      adult: boolean;
+      backdrop_path: string;
+      id: number;
+      overview: string;
+      poster_path: string;
+      release_date: string;
+      title: string;
+    };
+  }[];
+}
+
+export interface IGetTvResult {
+  data: {
+    results: {
+      length: number;
+      backdrop_path: string;
+      first_air_date: string;
+      id: number;
+      name: string;
+      origin_country: string[];
+      overview: string;
+      poster_path: string;
+    };
+  };
+}
+
+export function getMovies(option: string) {
   return axios.get(
-    `${BASE_PATH}/movie/now_playing?api_key=${
-      import.meta.env.VITE_API_KEY
-    }&language=ko-KR`
+    `${BASE_PATH}/movie/${option}?api_key=${API_KEY}&language=ko-KR`
+  );
+}
+
+export function getMovie(keyword: string) {
+  return axios.get(
+    `${BASE_PATH}/search/movie?api_key=${API_KEY}&query=${keyword}&language=ko-KR`
+  );
+}
+
+export function getTv(option: string) {
+  return axios.get(
+    `${BASE_PATH}/tv/${option}?api_key=${API_KEY}&language=ko-KR`
+  );
+}
+
+export function SearchTv(keyword: string) {
+  return axios.get(
+    `${BASE_PATH}/search/tv?api_key=${API_KEY}&query=${keyword}&language=ko-KR`
   );
 }

@@ -131,8 +131,9 @@ function Header() {
   const [searchOpen, setSearchOpen] = useState<boolean>(false);
   const { register, handleSubmit, setFocus } = useForm<IForm>();
   const homeMatch = useMatch("/");
-  const MoviesMatch = useMatch("/movies/:movieId");
+  const BigMovieMatch = useMatch("/movie/:movieId/:key");
   const tvMatch = useMatch("/tv");
+  const BigTvMatch = useMatch("/tv/:tvId/:key");
   const { scrollY } = useScroll();
   const navAnimation = useAnimation();
   const navigate = useNavigate();
@@ -150,12 +151,13 @@ function Header() {
     });
   }, [scrollY, navAnimation]);
   const onVaild = (data: IForm) => {
-    navigate(`/search?keyword=${data.keyword}`);
+    window.location.href = `/search?keyword=${data.keyword}`;
   };
   return (
     <Nav variants={navVariants} initial="initial" animate={navAnimation}>
       <Col>
         <Logo
+          onClick={() => navigate("/")}
           variants={logoVariants}
           initial="nomarl"
           whileHover="active"
@@ -170,12 +172,13 @@ function Header() {
           <Item>
             <Link to="/">
               Home{" "}
-              {homeMatch || MoviesMatch ? <Circle layoutId="circle" /> : null}
+              {homeMatch || BigMovieMatch ? <Circle layoutId="circle" /> : null}
             </Link>
           </Item>
           <Item>
             <Link to="/tv">
-              Tv Shows {tvMatch && <Circle layoutId="circle" />}
+              Tv Shows{" "}
+              {tvMatch || BigTvMatch ? <Circle layoutId="circle" /> : null}
             </Link>
           </Item>
         </Items>
@@ -197,7 +200,7 @@ function Header() {
             ></path>
           </motion.svg>
           <Input
-            autoComplete="false"
+            autoComplete="off"
             {...register("keyword", { required: true, minLength: 2 })}
             initial={{ scaleX: 0 }}
             animate={{
